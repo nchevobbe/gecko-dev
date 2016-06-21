@@ -28,6 +28,19 @@ define(function(require, exports, module) {
 
     displayName: "object",
 
+    getTitle: function (grip) {
+      let title = "StyleSheet";
+      if (this.props.objectLink) {
+        return ObjectBox({},
+          this.props.objectLink({
+            objectActor: grip,
+            label: title
+          })
+        );
+      }
+      return title;
+    },
+
     getLocation: function(grip) {
       // Embedded stylesheets don't have URL and so, no preview.
       let url = grip.preview ? grip.preview.url : "";
@@ -39,7 +52,7 @@ define(function(require, exports, module) {
 
       return (
         ObjectBox({className: "object"},
-          "StyleSheet ",
+          this.getTitle(grip),
           DOM.span({className: "objectPropValue"},
             this.getLocation(grip)
           )

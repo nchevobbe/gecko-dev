@@ -29,7 +29,13 @@ define(function(require, exports, module) {
 
     displayName: "Obj",
 
-    getTitle: function() {
+    getTitle: function(object) {
+      if (this.props.objectLink) {
+        return this.props.objectLink({
+          objectActor: object,
+          label: object.class
+        });
+      }
       return "";
     },
 
@@ -77,9 +83,14 @@ define(function(require, exports, module) {
 
       if (props.length > max) {
         props.pop();
+        let objectLink = this.props.objectLink || span;
+
         props.push(Caption({
           key: "more",
-          object: "more...",
+          object: objectLink({
+            objectActor: object,
+            label: "more...",
+          })
         }));
       } else if (props.length > 0) {
         // Remove the last comma.
@@ -135,13 +146,24 @@ define(function(require, exports, module) {
     render: function() {
       let object = this.props.object;
       let props = this.shortPropIterator(object);
+      let objectLink = this.props.objectLink || span;
 
       return (
         ObjectBox({className: "object"},
-          span({className: "objectTitle"}, this.getTitle(object)),
-          span({className: "objectLeftBrace", role: "presentation"}, "{"),
+          this.getTitle(object),
+          objectLink({
+            label: "{",
+            className: "objectLeftBrace",
+            role: "presentation",
+            objectActor: object
+          }),
           props,
-          span({className: "objectRightBrace"}, "}")
+          objectLink({
+            label: "}",
+            className: "objectRightBrace",
+            role: "presentation",
+            objectActor: object
+          })
         )
       );
     },

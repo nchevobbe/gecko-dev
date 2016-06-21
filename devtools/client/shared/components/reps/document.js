@@ -33,8 +33,16 @@ define(function(require, exports, module) {
       return location ? getFileName(location) : "";
     },
 
-    getTitle: function(win, context) {
-      return "document";
+    getTitle: function(grip) {
+      if (this.props.objectLink) {
+        return ObjectBox({},
+          this.props.objectLink({
+            objectActor: grip,
+            label: grip.class
+          })
+        );
+      }
+      return "";
     },
 
     getTooltip: function(doc) {
@@ -46,6 +54,7 @@ define(function(require, exports, module) {
 
       return (
         ObjectBox({className: "object"},
+          this.getTitle(grip),
           span({className: "objectPropValue"},
             this.getLocation(grip)
           )
