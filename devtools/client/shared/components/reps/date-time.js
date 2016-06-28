@@ -30,9 +30,8 @@ define(function(require, exports, module) {
     getTitle: function(grip) {
       if (this.props.objectLink) {
         return this.props.objectLink({
-          objectActor: grip,
-          label: grip.class
-        });
+          objectActor: grip
+        }, grip.class);
       }
       return "";
     },

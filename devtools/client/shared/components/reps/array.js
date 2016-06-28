@@ -42,18 +42,16 @@ define(function(require, exports, module) {
         ObjectBox({
           className: "array"},
           objectLink({
-            label: "[",
             className: "arrayLeftBracket",
             role: "presentation",
             objectActor: object
-          }),
+          }, "["),
           items,
           objectLink({
-            label: "]",
             className: "arrayRightBracket",
             role: "presentation",
             objectActor: object
-          }),
+          }, "]"),
           DOM.span({
             className: "arrayProperties",
             role: "group"}
@@ -105,9 +103,8 @@ define(function(require, exports, module) {
         items.push(Caption({
           key: "more",
           object: objectLink({
-            label: "more...",
             objectActor: this.props.object
-          })
+          }, "more...")
         }));
       }
 

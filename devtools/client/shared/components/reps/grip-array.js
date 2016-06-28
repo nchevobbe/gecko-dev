@@ -37,9 +37,8 @@ define(function(require, exports, module) {
     getTitle: function(object, context) {
       if (this.props.objectLink) {
         return this.props.objectLink({
-          objectActor: object,
-          label: object.class
-        });
+          objectActor: object
+        }, object.class);
       }
       return "";
     },
@@ -97,9 +96,8 @@ define(function(require, exports, module) {
         items.push(Caption({
           key: "more",
           object: objectLink({
-            label: "more...",
             objectActor: this.props.object
-          })
+          }, "more...")
         }));
       }
 
@@ -138,18 +136,16 @@ define(function(require, exports, module) {
           className: "array"},
           this.getTitle(object),
           objectLink({
-            label: "[",
             className: "arrayLeftBracket",
             role: "presentation",
             objectActor: object
-          }),
+          }, "["),
           items,
           objectLink({
-            label: "]",
             className: "arrayRightBracket",
             role: "presentation",
             objectActor: object
-          }),
+          }, "]"),
           span({
             className: "arrayProperties",
             role: "group"}

@@ -38,10 +38,9 @@ define(function(require, exports, module) {
       return (
         ObjectBox({className: "regexp"},
           objectLink({
-            label: this.getSource(grip),
             objectActor: grip,
             className: "regexpSource"
-          })
+          }, this.getSource(grip))
         )
       );
     },

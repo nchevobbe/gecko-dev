@@ -31,9 +31,8 @@ define(function(require, exports, module) {
       if (this.props.objectLink) {
         return ObjectBox({},
           this.props.objectLink({
-            objectActor: grip,
-            label: this.getType(grip)
-          })
+            objectActor: grip
+          }, this.getType(grip))
         );
       }
       return "";

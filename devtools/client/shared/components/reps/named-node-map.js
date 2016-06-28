@@ -37,9 +37,8 @@ define(function(require, exports, module) {
     getTitle: function(object) {
       if (this.props.objectLink && object.class) {
         return this.props.objectLink({
-          objectActor: object,
-          label: object.class
-        });
+          objectActor: object
+        }, object.class);
       }
       return object.class ? object.class : "";
     },
@@ -55,9 +54,8 @@ define(function(require, exports, module) {
         items.push(Caption({
           key: "more",
           object: objectLink({
-            label: "more...",
             objectActor: this.props.object
-          })
+          }, "more...")
         }));
       }
 
@@ -113,18 +111,16 @@ define(function(require, exports, module) {
         ObjectBox({className: "NamedNodeMap"},
           this.getTitle(grip),
           objectLink({
-            label: "[",
             className: "arrayLeftBracket",
             role: "presentation",
             objectActor: grip
-          }),
+          }, "["),
           items,
           objectLink({
-            label: "]",
             className: "arrayRightBracket",
             role: "presentation",
             objectActor: grip
-          })
+          }, "]")
         )
       );
     },

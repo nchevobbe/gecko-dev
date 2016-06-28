@@ -27,9 +27,8 @@ define(function(require, exports, module) {
     getTitle: function (grip) {
       if (this.props.objectLink) {
         return this.props.objectLink({
-          objectActor: grip,
-          label: grip.preview.type
-        });
+          objectActor: grip
+        }, grip.preview.type);
       }
       return grip.preview.type;
     },

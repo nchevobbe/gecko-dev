@@ -32,9 +32,8 @@ define(function(require, exports, module) {
     getTitle: function(object) {
       if (this.props.objectLink) {
         return this.props.objectLink({
-          objectActor: object,
-          label: object.class
-        });
+          objectActor: object
+        }, object.class);
       }
       return "";
     },
@@ -88,9 +87,8 @@ define(function(require, exports, module) {
         props.push(Caption({
           key: "more",
           object: objectLink({
-            objectActor: object,
-            label: "more...",
-          })
+            objectActor: object
+          }, "more...")
         }));
       } else if (props.length > 0) {
         // Remove the last comma.
@@ -152,18 +150,16 @@ define(function(require, exports, module) {
         ObjectBox({className: "object"},
           this.getTitle(object),
           objectLink({
-            label: "{",
             className: "objectLeftBrace",
             role: "presentation",
             objectActor: object
-          }),
+          }, "{"),
           props,
           objectLink({
-            label: "}",
             className: "objectRightBrace",
             role: "presentation",
             objectActor: object
-          })
+          }, "}")
         )
       );
     },
