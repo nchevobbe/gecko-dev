@@ -10,6 +10,7 @@ const {
   prepareMessage
 } = require("devtools/client/webconsole/new-console-output/utils/messages");
 const { getAllMessages } = require("devtools/client/webconsole/new-console-output/selectors/messages");
+const { getLogLimit } = require("devtools/client/webconsole/new-console-output/selectors/log-limit");
 
 function run_test() {
   run_next_test();
@@ -81,4 +82,22 @@ add_task(function*() {
   messages = getAllMessages(getState());
   deepEqual(messages.toArray(), [prepareMessage(clearPacket)],
     "console.clear clears existing messages and add a new one");
+});
+
+/**
+ * Test message limit on the store.
+ */
+add_task(function* () {
+  const { getState, dispatch } = storeFactory();
+  const logLimit = getLogLimit(getState());
+  const messageNumber = logLimit + 100;
+
+  for (let i = 1; i <= messageNumber; i++) {
+    dispatch(actions.messageAdd(getLogTestPacket([i])));
+  }
+
+  let messages = getAllMessages(getState());
+  equal(messages.count(), logLimit, "Messages are pruned up to the log limit");
+  deepEqual(messages.last().data.arguments, [messageNumber],
+    "The last message is the expected one");
 });

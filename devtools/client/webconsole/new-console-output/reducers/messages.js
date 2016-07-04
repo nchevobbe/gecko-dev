@@ -7,29 +7,48 @@
 
 const Immutable = require("devtools/client/shared/vendor/immutable");
 const constants = require("devtools/client/webconsole/new-console-output/constants");
+const { getAllMessages } = require("devtools/client/webconsole/new-console-output/selectors/messages");
+const { getLogLimit } = require("devtools/client/webconsole/new-console-output/selectors/log-limit");
 
-function messages(state = Immutable.List(), action) {
+function messages(state, action) {
   switch (action.type) {
     case constants.MESSAGE_ADD:
-      let newMessage = action.message;
+      return Object.assign({}, state, {
+        messages: prune(state, addMessage(action.message, getAllMessages(state)))});
 
-      if (newMessage.data.level === "clear") {
-        return Immutable.List([newMessage]);
-      }
-
-      if (newMessage.allowRepeating && state.size > 0) {
-        let lastMessage = state.last();
-        if (lastMessage.repeatId === newMessage.repeatId) {
-          newMessage.repeat = lastMessage.repeat + 1;
-          return state.pop().push(newMessage);
-        }
-      }
-      return state.push(newMessage);
     case constants.MESSAGES_CLEAR:
-      return Immutable.List();
+      return Object.assign({}, state, {
+        messages: Immutable.List()});
   }
 
   return state;
+}
+
+function addMessage(newMessage, messagesList = Immutable.List()) {
+  if (newMessage.data.level === "clear") {
+    return Immutable.List([newMessage]);
+  }
+
+  if (newMessage.allowRepeating && messagesList.count() > 0) {
+    let lastMessage = messagesList.last();
+    if (lastMessage.repeatId === newMessage.repeatId) {
+      newMessage.repeat = lastMessage.repeat + 1;
+      return messagesList.pop().push(newMessage);
+    }
+  }
+
+  return messagesList.push(newMessage);
+}
+
+function prune(state, messagesList = Immutable.List()) {
+  let messageCount = messagesList.count();
+  let logLimit = getLogLimit(state);
+
+  if (messageCount > logLimit) {
+    return messagesList.splice(0, messageCount - logLimit);
+  }
+
+  return messagesList;
 }
 
 exports.messages = messages;

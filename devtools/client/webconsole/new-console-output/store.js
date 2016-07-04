@@ -3,11 +3,20 @@
  * file, You can obtain one at http://mozilla.org/MPL/2.0/. */
 "use strict";
 
-const { combineReducers, createStore } = require("devtools/client/shared/vendor/redux");
+const { createStore } = require("devtools/client/shared/vendor/redux");
+const Immutable = require("devtools/client/shared/vendor/immutable");
 const { reducers } = require("./reducers/index");
+const Services = require("Services");
 
-function storeFactory(initialState = {}) {
-  return createStore(combineReducers(reducers), initialState);
+const initialState = {
+  messages: Immutable.List(),
+  prefs: {
+    logLimit: Math.max(Services.prefs.getIntPref("devtools.hud.loglimit"), 1)
+  }
+};
+
+function storeFactory() {
+  return createStore((state, action) => reducers.messages(state, action), initialState);
 }
 
 // Provide the single store instance for app code.

@@ -60,3 +60,26 @@ testPackets.set("console.clear", {
     "category": "webdev"
   }
 });
+
+function getLogTestPacket(args) {
+  return {
+    "from": "server1.conn4.child1/consoleActor2",
+    "type": "consoleAPICall",
+    "message": {
+      "arguments": args,
+      "columnNumber": 1,
+      "counter": null,
+      "filename": "file:///test.html",
+      "functionName": "",
+      "groupName": "",
+      "level": "log",
+      "lineNumber": 1,
+      "private": false,
+      "styles": [],
+      "timeStamp": Date.now(),
+      "timer": null,
+      "workerType": "none",
+      "category": "webdev"
+    }
+  };
+}
