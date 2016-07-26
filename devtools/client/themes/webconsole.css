@@ -689,5 +689,13 @@ a.learn-more-link.webconsole-learn-more-link {
 
 .webconsole-filterbar-primary .devtools-plain-input {
   flex: 1 1 100%;
+}
+
+.devtools-plain-input {
   border-color: transparent;
+  background-color: transparent;
+}
+
+.theme-dark .devtools-plain-input {
+  color: var(--theme-highlight-gray);
 }
